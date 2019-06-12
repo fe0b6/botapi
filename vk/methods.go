@@ -14,7 +14,7 @@ import (
 func SendMessage(req *types.Message, botans *types.Message, opt *MessageOptions) (ans int, err error) {
 	api := API{AccessToken: opt.Token}
 
-	ans, err = api.MessagesSend(map[string]string{
+	h := map[string]string{
 		"user_id":          req.FromID.String(),
 		"peer_id":          req.ChatID.String(),
 		"chat_id":          req.ChatID.String(),
@@ -22,7 +22,14 @@ func SendMessage(req *types.Message, botans *types.Message, opt *MessageOptions)
 		"message":          botans.Text,
 		"dont_parse_links": "1",
 		"disable_mentions": "1",
-	})
+	}
+
+	// Если есть клавиатура
+	if len(botans.Keyboard.Buttons) > 0 || botans.Keyboard.NeedHide {
+		h["keyboard"] = formatKeyboard(&botans.Keyboard)
+	}
+
+	ans, err = api.MessagesSend(h)
 	if err != nil {
 		log.Println("[error]", err)
 		return
@@ -47,6 +54,36 @@ func (vk *API) MessagesSend(params map[string]string) (ans int, err error) {
 	}
 
 	return
+}
+
+func formatKeyboard(kb *types.Keyboard) string {
+	if kb.NeedHide {
+		return `{"buttons":[],"one_time":true}`
+	}
+
+	keyboard := Keyboard{Buttons: [][]KeyboardButton{}, OneTime: kb.OneTime}
+
+	for _, ba := range kb.Buttons {
+		butns := []KeyboardButton{}
+		for _, b := range ba {
+			butns = append(butns, KeyboardButton{
+				Action: KeyboardButtonAction{
+					Type:  "text",
+					Label: b.Text,
+				},
+			})
+		}
+
+		keyboard.Buttons = append(keyboard.Buttons, butns)
+	}
+
+	b, err := json.Marshal(keyboard)
+	if err != nil {
+		log.Println("[error]", err)
+		return ""
+	}
+
+	return string(b)
 }
 
 // Формируем случайный id

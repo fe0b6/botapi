@@ -1395,3 +1395,22 @@ type MessageOptions struct {
 	Token    string
 	RandomID int64
 }
+
+// Keyboard - клавиатура
+type Keyboard struct {
+	OneTime bool               `json:"one_time"`
+	Buttons [][]KeyboardButton `json:"buttons"`
+}
+
+// KeyboardButton - кнопка клавиатуры
+type KeyboardButton struct {
+	Action KeyboardButtonAction `json:"action"`
+	Color  string               `json:"color"`
+}
+
+// KeyboardButtonAction - Действие клавиатуры
+type KeyboardButtonAction struct {
+	Type    string `json:"type"`
+	Label   string `json:"label"`
+	Payload string `json:"payload"`
+}

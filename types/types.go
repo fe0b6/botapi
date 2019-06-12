@@ -25,7 +25,9 @@ type Message struct {
 
 // Keyboard - объект клавиатуры
 type Keyboard struct {
-	Buttons [][]Button `json:"buttons"`
+	OneTime  bool       `json:"one_time"`
+	NeedHide bool       `json:"need_hide"`
+	Buttons  [][]Button `json:"buttons"`
 }
 
 // Button - объект кнопки

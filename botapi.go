@@ -33,7 +33,9 @@ func (bot *Bot) SendMessage(req *types.Message, ans *types.Message) (err error) 
 	}
 
 	if err != nil {
-		log.Println("[error]", err)
+		if err.Error() != "skip" {
+			log.Println("[error]", err)
+		}
 		return
 	}
 

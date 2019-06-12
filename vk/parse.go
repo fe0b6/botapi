@@ -41,7 +41,9 @@ func ParseRequest(r *http.Request, secret string) (ans *types.Message, err error
 	// преобразуем в стандартный вид
 	ans, err = toStandard(&cbo)
 	if err != nil {
-		log.Println("[error]", err)
+		if err.Error() != "skip" {
+			log.Println("[error]", err)
+		}
 		return
 	}
 
@@ -82,6 +84,9 @@ func toStandard(cbo *CallBackObj) (ans *types.Message, err error) {
 		if cbo.Message.Payload != "" {
 			ans.Command = parsePayload(cbo.Message.Payload)
 		}
+	default:
+		err = errors.New("skip")
+		return
 	}
 
 	ans.Source = "vk"
