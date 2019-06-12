@@ -1065,7 +1065,7 @@ type MessagesGetAns struct {
 	PeerID      int                  `json:"peer_id"`
 	FromID      int                  `json:"from_id"`
 	Text        string               `json:"text"`
-	RandomID    int                  `json:"random_id"`
+	RandomID    int64                `json:"random_id"`
 	Attachments []Attachments        `json:"attachments"`
 	Important   bool                 `json:"important"`
 	Geo         MessagesGetAnsGeo    `json:"geo"`
