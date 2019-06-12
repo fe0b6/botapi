@@ -2,18 +2,11 @@ package tg
 
 import (
 	"bytes"
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"reflect"
-	"sort"
-	"strconv"
-	"strings"
 	"time"
 )
 
@@ -78,6 +71,8 @@ func (tg *API) sendJSONDataFull(method string, data interface{}) (ans APIRespons
 		log.Println("[error]", method, err)
 		return
 	}
+
+	log.Println(string(b))
 
 	// Формируем запрос
 	req, err := http.NewRequest("POST", tg.getRequestURL(method), bytes.NewBuffer(b))
@@ -164,56 +159,5 @@ func (tg *API) floodWait(ans APIResponse) (ok bool) {
 	time.Sleep(time.Duration(ans.Parameters.RetryAfter) * time.Second)
 
 	ok = true
-	return
-}
-
-// CheckAuth - Проверка авторизации
-func (tg *API) CheckAuth(data map[string]interface{}) (ok bool) {
-
-	// Полверяем что хэш указан
-	if _, ex := data["hash"]; !ex {
-		return
-	}
-
-	// Получаем данные
-	keys := []string{}
-	values := map[string]string{}
-	for k, v := range data {
-		if k == "hash" {
-			if reflect.TypeOf(v).String() != "string" {
-				return
-			}
-			continue
-		}
-		keys = append(keys, k)
-
-		switch t := v.(type) {
-		case string:
-			values[k] = v.(string)
-		case float64:
-			values[k] = strconv.FormatFloat(v.(float64), 'f', -1, 64)
-		default:
-			log.Println("[error]", "unknown type:", t)
-		}
-	}
-
-	// Собираем строку
-	sort.Strings(keys)
-	arr := []string{}
-	for _, k := range keys {
-		arr = append(arr, k+"="+values[k])
-	}
-	checkStr := strings.Join(arr, "\n")
-
-	h256 := sha256.New()
-	h256.Write([]byte(tg.AccessToken))
-	hm := hmac.New(sha256.New, h256.Sum(nil))
-	hm.Write([]byte(checkStr))
-
-	// Убедимся что хэши совпали
-	if hex.EncodeToString(hm.Sum(nil)) == data["hash"].(string) {
-		ok = true
-	}
-
 	return
 }
