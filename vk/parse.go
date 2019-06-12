@@ -57,6 +57,8 @@ func toStandard(cbo *CallBackObj) (ans *types.Message, err error) {
 	}
 
 	switch cbo.Type {
+	case "confirmation":
+		ans = &types.Message{IsConfirmation: true}
 	case "message_allow":
 		ans = &types.Message{
 			IsAllow: true,
