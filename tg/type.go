@@ -113,3 +113,8 @@ type SendMessageData struct {
 	DisableNotification   bool        `json:"disable_notification"`
 	HideReplyMarkup       bool
 }
+
+// MessageOptions - Опции отправки сообщения
+type MessageOptions struct {
+	Token string
+}
