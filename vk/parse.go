@@ -58,17 +58,18 @@ func toStandard(cbo *CallBackObj) (ans *types.Message, err error) {
 	case "message_allow":
 		ans = &types.Message{
 			IsAllow: true,
-			FromID:  cbo.MessageAllow.UserID,
+			FromID:  types.ID{ID: cbo.MessageAllow.UserID},
 			Text:    cbo.MessageAllow.Key,
 		}
 	case "message_deny":
 		ans = &types.Message{
 			IsAllow: false,
-			FromID:  cbo.MessageAllow.UserID,
+			FromID:  types.ID{ID: cbo.MessageAllow.UserID},
 		}
 	case "message_new", "message_reply", "message_edit":
 		ans = &types.Message{
-			FromID: cbo.Message.FromID,
+			FromID: types.ID{ID: cbo.Message.FromID},
+			ChatID: types.ID{ID: cbo.Message.PeerID},
 			Time:   time.Unix(cbo.Message.Date, 0),
 			Text:   cbo.Message.Text,
 		}

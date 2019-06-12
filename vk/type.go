@@ -1107,6 +1107,13 @@ type MessagesIsMessagesFromGroupAllowedAns struct {
 	IsAllowed int `json:"is_allowed"`
 }
 
+// MessagesSendAns - ответ на отправку сообщения
+type MessagesSendAns struct {
+	PeerID    int    `json:"peer_id"`
+	MessageID int    `json:"message_id"`
+	Error     string `json:"error"`
+}
+
 /*
 	Market
 */
@@ -1381,4 +1388,10 @@ type Cities struct {
 type PostIDDateInfto struct {
 	Ids   []int   `json:"ids"`
 	Dates []int64 `json:"dates"`
+}
+
+// MessageOptions - Опции отправки сообщения
+type MessageOptions struct {
+	Token    string
+	RandomID int64
 }
