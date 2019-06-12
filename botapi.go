@@ -39,7 +39,7 @@ func (bot *Bot) SendMessage(req *types.Message, ans *types.Message) (err error) 
 	case "vk":
 		_, err = vk.SendMessage(req, ans, &vk.MessageOptions{Token: bot.VK.Token})
 	case "tg":
-		_, err = tg.SendMessage(req, ans, &vk.MessageOptions{Token: bot.TG.Token})
+		err = tg.SendMessage(req, ans, &tg.MessageOptions{Token: bot.TG.Token})
 	default:
 		log.Println("[error]", "unknown source", req.Source)
 		return
