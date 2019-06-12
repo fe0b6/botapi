@@ -12,7 +12,7 @@ import (
 )
 
 // ParseRequest - Разбираем запрос, проверяем его корректность и приводим к стандартному виду
-func ParseRequest(r *http.Request, secret string) (ans types.Message, err error) {
+func ParseRequest(r *http.Request, secret string) (ans *types.Message, err error) {
 	// Читаем данные запроса
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -47,7 +47,7 @@ func ParseRequest(r *http.Request, secret string) (ans types.Message, err error)
 }
 
 // Приводим к стандартному виду
-func toStandard(cbo *CallBackObj) (ans types.Message, err error) {
+func toStandard(cbo *CallBackObj) (ans *types.Message, err error) {
 	err = cbo.Parse()
 	if err != nil {
 		log.Println("[error]", err)
@@ -56,18 +56,18 @@ func toStandard(cbo *CallBackObj) (ans types.Message, err error) {
 
 	switch cbo.Type {
 	case "message_allow":
-		ans = types.Message{
+		ans = &types.Message{
 			IsAllow: true,
 			FromID:  cbo.MessageAllow.UserID,
 			Text:    cbo.MessageAllow.Key,
 		}
 	case "message_deny":
-		ans = types.Message{
+		ans = &types.Message{
 			IsAllow: false,
 			FromID:  cbo.MessageAllow.UserID,
 		}
 	case "message_new", "message_reply", "message_edit":
-		ans = types.Message{
+		ans = &types.Message{
 			FromID: cbo.Message.FromID,
 			Time:   time.Unix(cbo.Message.Date, 0),
 			Text:   cbo.Message.Text,
