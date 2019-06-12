@@ -180,3 +180,10 @@ func (vk *API) httpErrorWait(method string) (ok bool) {
 	ok = true
 	return
 }
+
+// CheckAuth - Проверяем авторизованный ли запрос
+func (vk *API) CheckAuth() (ok bool) {
+
+	ok = true
+	return
+}
