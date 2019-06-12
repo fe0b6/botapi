@@ -20,6 +20,8 @@ func ParseRequest(r *http.Request, secret string) (ans *types.Message, err error
 		return
 	}
 
+	log.Println(string(b))
+
 	// Парсим объект
 	var cbo CallBackObj
 	err = json.Unmarshal(b, &cbo)
