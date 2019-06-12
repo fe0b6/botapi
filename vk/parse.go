@@ -72,6 +72,7 @@ func toStandard(cbo *CallBackObj) (ans *types.Message, err error) {
 		}
 	case "message_new":
 		ans = &types.Message{
+			ID:     types.ID{ID: cbo.Message.ID},
 			FromID: types.ID{ID: cbo.Message.FromID},
 			ChatID: types.ID{ID: cbo.Message.PeerID},
 			Time:   time.Unix(cbo.Message.Date, 0),
