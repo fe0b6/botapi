@@ -9,7 +9,7 @@ import (
 )
 
 // ParseRequest - Разбираем запрос
-func ParseRequest(r *http.Request, opt *MessageOptions) (ans types.Message, err error) {
+func ParseRequest(r *http.Request, opt *MessageOptions) (ans *types.Message, err error) {
 	switch opt.Source {
 	case "vk":
 		ans, err = vk.ParseRequest(r, opt.VKSecret)
