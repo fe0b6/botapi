@@ -47,8 +47,10 @@ func (id *ID) String() (str string) {
 		str = strconv.FormatFloat(id.ID.(float64), 'f', -1, 64)
 	case int64:
 		str = strconv.FormatInt(id.ID.(int64), 10)
+	case int:
+		str = strconv.Itoa(id.ID.(int))
 	default:
-		log.Println("[error]", "unknown type", t)
+		log.Printf("[error] unknown type %T!\n", t)
 	}
 
 	return
