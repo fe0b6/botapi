@@ -14,7 +14,9 @@ func (bot *Bot) ParseRequest(r *http.Request, opt *MessageOptions) (ans *types.M
 	case "vk":
 		ans, err = vk.ParseRequest(r, bot.VK.Secret)
 		if err != nil {
-			log.Println("[error]", err)
+			if err.Error() != "skip" {
+				log.Println("[error]", err)
+			}
 			return
 		}
 	}
