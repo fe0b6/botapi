@@ -8,15 +8,27 @@ import (
 
 // Message - Структура сообщения
 type Message struct {
-	ID      ID        `json:"id"`
-	Text    string    `json:"Text"`
-	Time    time.Time `json:"time"`
-	FromID  ID        `json:"from_id"`
-	ChatID  ID        `json:"chat_id"`
-	Source  string    `json:"source"`
-	IsAllow bool      `json:"is_allow"`
-	IsDeny  bool      `json:"is_deny"`
+	ID       ID        `json:"id"`
+	Text     string    `json:"Text"`
+	Time     time.Time `json:"time"`
+	FromID   ID        `json:"from_id"`
+	ChatID   ID        `json:"chat_id"`
+	Source   string    `json:"source"`
+	IsAllow  bool      `json:"is_allow"`
+	IsDeny   bool      `json:"is_deny"`
+	Keyboard Keyboard  `json:"keyboard"`
 	//	Attachments
+}
+
+// Keyboard - объект клавиатуры
+type Keyboard struct {
+	Buttons [][]Button `json:"buttons"`
+}
+
+// Button - объект кнопки
+type Button struct {
+	Text    string `json:"text"`
+	Command string `json:"command"`
 }
 
 // ID - объект айди
