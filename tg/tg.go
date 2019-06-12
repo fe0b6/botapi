@@ -73,7 +73,7 @@ func (tg *API) sendJSONDataFull(method string, data interface{}) (ans APIRespons
 	}
 
 	// Если нет клавиатуры - удаляем отметку о ней
-	b = bytes.Replace(b, []byte(`"reply_markup":null`), []byte(""), -1)
+	b = bytes.Replace(b, []byte(`,"reply_markup":null`), []byte(""), -1)
 
 	// Формируем запрос
 	req, err := http.NewRequest("POST", tg.getRequestURL(method), bytes.NewBuffer(b))
