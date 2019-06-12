@@ -51,5 +51,7 @@ func toStandard(upd *Update) (ans *types.Message, err error) {
 		Text:   upd.Message.Text,
 	}
 
+	ans.Source = "tg"
+
 	return
 }
