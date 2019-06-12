@@ -10,6 +10,7 @@ import (
 type Message struct {
 	ID             ID        `json:"id"`
 	Text           string    `json:"Text"`
+	Command        string    `json:"command"`
 	Time           time.Time `json:"time"`
 	FromID         ID        `json:"from_id"`
 	ChatID         ID        `json:"chat_id"`
