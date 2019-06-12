@@ -40,6 +40,8 @@ func SendMessage(req *types.Message, botans *types.Message, opt *MessageOptions)
 
 // MessagesSend - отправка сообщения
 func (vk *API) MessagesSend(params map[string]string) (ans int, err error) {
+	log.Printf("%+v\n", params)
+
 	// Отправляем запрос
 	r, err := vk.request("messages.send", params)
 	if err != nil {
