@@ -32,6 +32,7 @@ type Keyboard struct {
 
 // Button - объект кнопки
 type Button struct {
+	Color   string `json:"color"`
 	Text    string `json:"text"`
 	Command string `json:"command"`
 }

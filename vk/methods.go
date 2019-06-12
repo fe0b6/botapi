@@ -66,7 +66,11 @@ func formatKeyboard(kb *types.Keyboard) string {
 	for _, ba := range kb.Buttons {
 		butns := []KeyboardButton{}
 		for _, b := range ba {
+			if b.Color == "" {
+				b.Color = "primary"
+			}
 			butns = append(butns, KeyboardButton{
+				Color: b.Color,
 				Action: KeyboardButtonAction{
 					Type:  "text",
 					Label: b.Text,
