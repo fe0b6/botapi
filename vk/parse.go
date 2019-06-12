@@ -74,5 +74,7 @@ func toStandard(cbo *CallBackObj) (ans *types.Message, err error) {
 		}
 	}
 
+	ans.Source = "vk"
+
 	return
 }
