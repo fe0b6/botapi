@@ -65,11 +65,11 @@ type Message struct {
 	Date      int64   `json:"date"`
 	Chat      Chat    `json:"chat"`
 	Text      string  `json:"text"`
-	Сontact   Сontact `json:"contact"`
+	Contact   Contact `json:"contact"`
 }
 
-// Сontact - объект контакта
-type Сontact struct {
+// Contact - объект контакта
+type Contact struct {
 	PhoneNumber string `json:"phone_number"`
 	FirstName   string `json:"first_name"`
 	LastName    string `json:"last_name"`
