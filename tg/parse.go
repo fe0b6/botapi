@@ -53,7 +53,7 @@ func toStandard(upd *Update) (ans *types.Message, err error) {
 			PhoneNumber: upd.Message.Contact.PhoneNumber,
 			FirstName:   upd.Message.Contact.FirstName,
 			LastName:    upd.Message.Contact.LastName,
-			UserID:      upd.Message.Contact.UserID,
+			UserID:      types.ID{ID: upd.Message.Contact.UserID},
 		},
 	}
 
