@@ -90,10 +90,17 @@ type CallbackQuery struct {
 
 // ReplyKeyboardMarkup allows the Bot to set a custom keyboard.
 type ReplyKeyboardMarkup struct {
-	Keyboard        [][]string `json:"keyboard"`
-	ResizeKeyboard  bool       `json:"resize_keyboard"`
-	OneTimeKeyboard bool       `json:"one_time_keyboard"`
-	Selective       bool       `json:"selective"`
+	Keyboard        interface{} `json:"keyboard"`
+	ResizeKeyboard  bool        `json:"resize_keyboard"`
+	OneTimeKeyboard bool        `json:"one_time_keyboard"`
+	Selective       bool        `json:"selective"`
+}
+
+// ReplyKeyboardButton - структура кнопки клавиатуры
+type ReplyKeyboardButton struct {
+	Text            string `json:"text"`
+	RequestContact  bool   `json:"request_contact"`
+	RequestLocation bool   `json:"request_location"`
 }
 
 // ReplyKeyboardRemove - удаление клавиатуры

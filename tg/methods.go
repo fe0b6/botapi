@@ -46,20 +46,32 @@ func formatKeyboard(kb *types.Keyboard) interface{} {
 		return ReplyKeyboardMarkup{Keyboard: [][]string{}}
 	}
 
+	buttons := [][]ReplyKeyboardButton{}
 	keyboard := ReplyKeyboardMarkup{
-		Keyboard:        [][]string{},
 		OneTimeKeyboard: kb.OneTime,
 		ResizeKeyboard:  true,
 	}
 
 	for _, ba := range kb.Buttons {
-		butns := []string{}
+		butns := []ReplyKeyboardButton{}
 		for _, b := range ba {
-			butns = append(butns, b.Text)
+			bn := ReplyKeyboardButton{Text: b.Text}
+
+			if b.RequestContact {
+				bn.RequestContact = true
+			}
+
+			if b.RequestLocation {
+				bn.RequestLocation = true
+			}
+
+			butns = append(butns, bn)
 		}
 
-		keyboard.Keyboard = append(keyboard.Keyboard, butns)
+		buttons = append(buttons, butns)
 	}
+
+	keyboard.Keyboard = buttons
 
 	return keyboard
 }
