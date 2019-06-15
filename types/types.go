@@ -19,8 +19,16 @@ type Message struct {
 	IsDeny         bool      `json:"is_deny"`
 	IsConfirmation bool      `json:"is_confirmation"`
 	Keyboard       Keyboard  `json:"keyboard"`
-
+	Сontact        Сontact   `json:"contact"`
 	//	Attachments
+}
+
+// Сontact - объект контакта
+type Сontact struct {
+	PhoneNumber string `json:"phone_number"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	UserID      ID     `json:"user_id"`
 }
 
 // Keyboard - объект клавиатуры

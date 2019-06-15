@@ -49,6 +49,12 @@ func toStandard(upd *Update) (ans *types.Message, err error) {
 		ChatID: types.ID{ID: upd.Message.Chat.ID},
 		Time:   time.Unix(upd.Message.Date, 0),
 		Text:   upd.Message.Text,
+		Contact: types.Contact{
+			PhoneNumber: upd.Message.Contact.PhoneNumber,
+			FirstName:   upd.Message.Contact.FirstName,
+			LastName:    upd.Message.Contact.LastName,
+			UserID:      upd.Message.Contact.UserID,
+		},
 	}
 
 	ans.Source = "tg"

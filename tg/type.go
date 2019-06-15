@@ -60,11 +60,20 @@ type Chat struct {
 
 // Message is returned by almost every request, and contains data about almost anything.
 type Message struct {
-	MessageID int64  `json:"message_id"`
-	From      User   `json:"from"`
-	Date      int64  `json:"date"`
-	Chat      Chat   `json:"chat"`
-	Text      string `json:"text"`
+	MessageID int64   `json:"message_id"`
+	From      User    `json:"from"`
+	Date      int64   `json:"date"`
+	Chat      Chat    `json:"chat"`
+	Text      string  `json:"text"`
+	Сontact   Сontact `json:"contact"`
+}
+
+// Сontact - объект контакта
+type Сontact struct {
+	PhoneNumber string `json:"phone_number"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	UserID      int64  `json:"user_id"`
 }
 
 // InlineQuery - Inline запрос
