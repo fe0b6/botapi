@@ -60,12 +60,21 @@ type Chat struct {
 
 // Message is returned by almost every request, and contains data about almost anything.
 type Message struct {
-	MessageID int64   `json:"message_id"`
-	From      User    `json:"from"`
-	Date      int64   `json:"date"`
-	Chat      Chat    `json:"chat"`
-	Text      string  `json:"text"`
-	Contact   Contact `json:"contact"`
+	MessageID int64       `json:"message_id"`
+	From      User        `json:"from"`
+	Date      int64       `json:"date"`
+	Chat      Chat        `json:"chat"`
+	Text      string      `json:"text"`
+	Contact   Contact     `json:"contact"`
+	Photo     []PhotoSize `json:"photo"`
+}
+
+// PhotoSize - объект фото
+type PhotoSize struct {
+	FileID   string `json:"file_id"`
+	Width    int64  `json:"width"`
+	Height   int64  `json:"height"`
+	FileSize int64  `json:"file_size"`
 }
 
 // Contact - объект контакта
@@ -132,5 +141,10 @@ type SendMessageData struct {
 
 // MessageOptions - Опции отправки сообщения
 type MessageOptions struct {
+	Token string
+}
+
+// ParseOptions - Опции парсинга сообщения
+type ParseOptions struct {
 	Token string
 }

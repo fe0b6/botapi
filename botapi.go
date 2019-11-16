@@ -21,7 +21,7 @@ func (bot *Bot) ParseRequest(r *http.Request, opt *MessageOptions) (ans *types.M
 			return
 		}
 	case "tg":
-		ans, err = tg.ParseRequest(r)
+		ans, err = tg.ParseRequest(r, &tg.ParseOptions{Token: bot.TG.Token})
 		if err != nil {
 			if err.Error() != "skip" {
 				log.Println("[error]", err)

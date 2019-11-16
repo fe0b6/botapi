@@ -2,6 +2,7 @@ package tg
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,7 +12,7 @@ import (
 )
 
 // ParseRequest - Разбираем запрос, проверяем его корректность и приводим к стандартному виду
-func ParseRequest(r *http.Request) (ans *types.Message, err error) {
+func ParseRequest(r *http.Request, opt *ParseOptions) (ans *types.Message, err error) {
 	// Читаем данные запроса
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -30,7 +31,7 @@ func ParseRequest(r *http.Request) (ans *types.Message, err error) {
 	}
 
 	// преобразуем в стандартный вид
-	ans, err = toStandard(&upd)
+	ans, err = toStandard(&upd, opt)
 	if err != nil {
 		if err.Error() != "skip" {
 			log.Println("[error]", err)
@@ -42,7 +43,7 @@ func ParseRequest(r *http.Request) (ans *types.Message, err error) {
 }
 
 // Приводим к стандартному виду
-func toStandard(upd *Update) (ans *types.Message, err error) {
+func toStandard(upd *Update, opt *ParseOptions) (ans *types.Message, err error) {
 	ans = &types.Message{
 		ID:     types.ID{ID: upd.Message.MessageID},
 		FromID: types.ID{ID: upd.Message.From.ID},
@@ -55,6 +56,16 @@ func toStandard(upd *Update) (ans *types.Message, err error) {
 			LastName:    upd.Message.Contact.LastName,
 			UserID:      types.ID{ID: upd.Message.Contact.UserID},
 		},
+		Photos: make([]types.Photo, 0, len(upd.Message.Photo)),
+	}
+
+	for _, ph := range upd.Message.Photo {
+		ans.Photos = append(ans.Photos, types.Photo{
+			URL:      fmt.Sprintf(FileEndpoint, opt.Token, ph.FileID),
+			Width:    ph.Width,
+			Height:   ph.Height,
+			FileSize: ph.FileSize,
+		})
 	}
 
 	ans.Source = "tg"

@@ -20,7 +20,16 @@ type Message struct {
 	IsConfirmation bool      `json:"is_confirmation"`
 	Keyboard       Keyboard  `json:"keyboard"`
 	Contact        Contact   `json:"contact"`
+	Photos         []Photo   `json:"photos"`
 	//	Attachments
+}
+
+// Photo - объект фото
+type Photo struct {
+	URL      string `json:"url"`
+	Width    int64  `json:"width"`
+	Height   int64  `json:"height"`
+	FileSize int64  `json:"file_size"`
 }
 
 // Contact - объект контакта
