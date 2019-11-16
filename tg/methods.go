@@ -1,6 +1,7 @@
 package tg
 
 import (
+	"encoding/json"
 	"errors"
 	"log"
 	"strings"
@@ -8,6 +9,27 @@ import (
 
 	"github.com/fe0b6/botapi/types"
 )
+
+// GetFile - Отправляем сообщение
+func GetFile(fileID string, opt *MessageOptions) (file File, err error) {
+	api := API{AccessToken: opt.Token}
+
+	fdata := SendGetFile{FileID: fileID}
+
+	ans := api.GetFile(fdata)
+	if !ans.Ok {
+		err = errors.New(ans.Description)
+		return
+	}
+
+	err = json.Unmarshal(ans.Result, &file)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
 
 // SendMessage - Отправляем сообщение
 func SendMessage(req *types.Message, botans *types.Message, opt *MessageOptions) (err error) {
@@ -133,4 +155,10 @@ func (tg *API) SendMessageBig(msg SendMessageData) (ans []APIResponse) {
 	}
 
 	return
+}
+
+// GetFile - Отправка сообщения
+func (tg *API) GetFile(sgf SendGetFile) (ans APIResponse) {
+
+	return tg.sendJSONData("getFile", sgf)
 }

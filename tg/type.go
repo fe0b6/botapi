@@ -69,6 +69,16 @@ type Message struct {
 	Photo     []PhotoSize `json:"photo"`
 }
 
+func (m *Message) GetBestPhoto() (photo PhotoSize) {
+	for _, ph := range m.Photo {
+		if ph.Width > photo.Width {
+			photo = ph
+		}
+	}
+
+	return
+}
+
 // PhotoSize - объект фото
 type PhotoSize struct {
 	FileID   string `json:"file_id"`
@@ -83,6 +93,12 @@ type Contact struct {
 	FirstName   string `json:"first_name"`
 	LastName    string `json:"last_name"`
 	UserID      int64  `json:"user_id"`
+}
+
+type File struct {
+	FileID   string `json:"file_id"`
+	FileSize int64  `json:"file_size"`
+	FilePath string `json:"file_path"`
 }
 
 // InlineQuery - Inline запрос
@@ -137,6 +153,11 @@ type SendMessageData struct {
 	ReplyMarkup           interface{} `json:"reply_markup"`
 	DisableNotification   bool        `json:"disable_notification"`
 	HideReplyMarkup       bool
+}
+
+// SendGetFile - инфа о файле
+type SendGetFile struct {
+	FileID string `json:"file_id"`
 }
 
 // MessageOptions - Опции отправки сообщения

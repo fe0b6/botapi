@@ -56,15 +56,24 @@ func toStandard(upd *Update, opt *ParseOptions) (ans *types.Message, err error) 
 			LastName:    upd.Message.Contact.LastName,
 			UserID:      types.ID{ID: upd.Message.Contact.UserID},
 		},
-		Photos: make([]types.Photo, 0, len(upd.Message.Photo)),
+		Photos: make([]types.Photo, 0, 1),
 	}
 
-	for _, ph := range upd.Message.Photo {
+	if len(upd.Message.Photo) > 0 {
+		photo := upd.Message.GetBestPhoto()
+
+		var photoFile File
+		photoFile, err = GetFile(photo.FileID, &MessageOptions{Token: opt.Token})
+		if err != nil {
+			log.Println("[error]", err)
+			return
+		}
+
 		ans.Photos = append(ans.Photos, types.Photo{
-			URL:      fmt.Sprintf(FileEndpoint, opt.Token, ph.FileID),
-			Width:    ph.Width,
-			Height:   ph.Height,
-			FileSize: ph.FileSize,
+			URL:      fmt.Sprintf(FileEndpoint, opt.Token, photoFile.FilePath),
+			Width:    photo.Width,
+			Height:   photo.Height,
+			FileSize: photo.FileSize,
 		})
 	}
 
