@@ -28,6 +28,7 @@ type OutMessage struct {
 	Attach      []botapi.Attach
 
 	ReplyTo botapi.ID
+	ForwardMessages []botapi.ID
 
 	DisableWebPagePreview bool
 }
@@ -88,6 +89,12 @@ func (m *OutMessage) WithAttach(attachments ...botapi.Attach) *OutMessage {
 // WithReplyTo - добавляем ид сообщения на которое отвечаем
 func (m *OutMessage) WithReplyTo(id botapi.ID) *OutMessage {
 	m.ReplyTo = id
+	return m
+}
+
+// WithForwardMessages - добавляем ид сообщения которые надо переслать
+func (m *OutMessage) WithForwardMessages(ids ...botapi.ID) *OutMessage {
+	m.ForwardMessages = ids
 	return m
 }
 

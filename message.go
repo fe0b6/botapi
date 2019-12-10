@@ -21,6 +21,7 @@ type OutMessage interface {
 	WithUserID(ID) OutMessage
 	WithIdempotent(ID) OutMessage
 	WithReplyTo(ID) OutMessage
+	WithForwardMessages(...ID) OutMessage
 	WithText(string) OutMessage
 	WithSendTimeout(time.Duration) OutMessage
 	WithButtons(...Button) OutMessage
