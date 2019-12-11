@@ -27,7 +27,6 @@ type OutMessage interface {
 	WithButtons(...Button) OutMessage
 	WithAttach(...Attach) OutMessage
 	WithDisableWebPagePreview() OutMessage
-	Send() Answer
 }
 
 // Button - объект кнопоки
