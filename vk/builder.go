@@ -1,6 +1,7 @@
 package vk
 
 import (
+	"math/rand"
 	"net/http"
 	"time"
 )
@@ -20,6 +21,9 @@ type Builder struct {
 	UsePrometheus       bool
 	MaxIdleConnsPerHost int
 	IdleConnTimeout     time.Duration
+	Domain              string
+	RetrySettings       map[int]int
+	HTTPRetrySettings   map[int]int
 }
 
 // NewBot - Создаем нового бота
@@ -51,6 +55,24 @@ func (b *Builder) WithPrometheus(prom bool) *Builder {
 	return b
 }
 
+// WithDomain - заменяем стандартный домен
+func (b *Builder) WithDomain(domain string) *Builder {
+	b.Domain = domain
+	return b
+}
+
+// WithRetrySettings - заменяем стандартный домен
+func (b *Builder) WithRetrySettings(settings map[int]int) *Builder {
+	b.RetrySettings = settings
+	return b
+}
+
+// WithHTTPRetrySettings - заменяем стандартный домен
+func (b *Builder) WithHTTPRetrySettings(settings map[int]int) *Builder {
+	b.HTTPRetrySettings = settings
+	return b
+}
+
 // WithMaxIdleConnsPerHost - Указываем сколько конектов можно к одному хосту
 func (b *Builder) WithMaxIdleConnsPerHost(count int) *Builder {
 	b.MaxIdleConnsPerHost = count
@@ -66,23 +88,36 @@ func (b *Builder) WithIdleConnTimeout(timeout time.Duration) *Builder {
 // Build - собираем бота
 func (b *Builder) Build() *Bot {
 
-	if b.MaxIdleConnsPerHost == 0 {
-		b.MaxIdleConnsPerHost = DefaultMaxIdleConnsPerHost
+	if b.Domain == "" {
+		b.Domain = DefaultDomain
 	}
 
-	if b.IdleConnTimeout == 0 {
-		b.IdleConnTimeout = DefaultIdleConnTimeout
+	if len(b.RetrySettings) == 0 {
+		b.RetrySettings = defaultRetrySettings
+	}
+
+	if len(b.HTTPRetrySettings) == 0 {
+		b.HTTPRetrySettings = defaultHTTPRetrySettings
 	}
 
 	bot := &Bot{
-		Host:          b.Host,
-		Token:         b.Token,
-		SendTimeout:   b.SendTimeout,
-		UsePrometheus: b.UsePrometheus, // TODO
-		Transport: &http.Transport{
+		Host:              b.Host,
+		Token:             b.Token,
+		SendTimeout:       b.SendTimeout,
+		UsePrometheus:     b.UsePrometheus, // TODO
+		Rand:              rand.New(rand.NewSource(time.Now().UnixNano())),
+		RetrySettings:     b.RetrySettings,
+		HTTPRetrySettings: b.HTTPRetrySettings,
+		Domain:            b.Domain,
+	}
+
+	if b.MaxIdleConnsPerHost > 0 && b.IdleConnTimeout > 0 {
+		bot.Transport = &http.Transport{
 			MaxIdleConnsPerHost: b.MaxIdleConnsPerHost,
 			IdleConnTimeout:     b.IdleConnTimeout,
-		},
+		}
+	} else {
+		bot.Transport = defaultHTTPTransport
 	}
 
 	return bot

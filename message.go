@@ -4,6 +4,40 @@ import (
 	"time"
 )
 
+// Message - объект мессаджа
+type Message struct {
+	RecipientID           ID
+	ChatID                ID
+	SenderID              ID
+	ReplyTo               ID
+	ForwardMessages       []ID
+	IdempotentKey         string
+	Text                  string
+	DisableWebPagePreview bool
+	Keyboard              Keyboard
+	Attach                []Attach
+	SendTimeout           time.Duration
+}
+
+// Keyboard - объект клавиатуры
+type Keyboard struct {
+	Buttons [][]Button
+	OneTime bool
+}
+
+// Button - объект кнопки
+type Button struct {
+	Color           string `json:"color"`
+	Text            string `json:"text"`
+	Command         string `json:"command"`
+	RequestContact  bool   `json:"request_contact"`
+	RequestLocation bool   `json:"request_location"`
+}
+
+// Attach - объект аттача
+type Attach struct {
+}
+
 // ID - интерфейс айдишника
 type ID interface {
 	String() string
@@ -27,12 +61,4 @@ type OutMessage interface {
 	WithButtons(...Button) OutMessage
 	WithAttach(...Attach) OutMessage
 	WithDisableWebPagePreview() OutMessage
-}
-
-// Button - объект кнопоки
-type Button interface {
-}
-
-// Attach - объект аттача
-type Attach interface {
 }
